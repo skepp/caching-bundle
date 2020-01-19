@@ -1,0 +1,35 @@
+{
+  "name": "batenburg/cache-bundle",
+  "description": "A cache bundle to simplify usage of symfony cache.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Batenburg",
+      "email": "p.batenurg@live.nl"
+    }
+  ],
+  "require": {
+    "php": ">= 7.2.0",
+    "symfony/cache": "^4.3|^4.4|^5.0",
+    "symfony/dependency-injection": "^4.3|^4.4|^5.0",
+    "symfony/framework-bundle": "^4.3|^4.4|^5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Batenburg\\CacheBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Batenburg\\CacheBundle\\Test\\": "tests/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
