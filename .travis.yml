@@ -29,24 +29,27 @@ jobs:
   include:
     # Test against latest Symfony 4.3 stable
     - php: 7.3
-      env: SYMFONY_REQUIRE="4.3.*"
       install:
+        - composer require symfony/cache:4.3.*
+        - composer require symfony/dependency-injection:4.3.*
+        - composer require symfony/framework-bundle:4.3.*
         - composer update
-        - composer show -i
 
     # Test against latest Symfony 4.4 dev
     - php: 7.3
-      env: SYMFONY_REQUIRE="4.4.*"
       install:
+        - composer require symfony/cache:4.4.*
+        - composer require symfony/dependency-injection:4.4.*
+        - composer require symfony/framework-bundle:4.4.*
         - composer update
-        - composer show -i
 
     # Test against latest Symfony 5.0 dev
     - php: 7.3
-      env: SYMFONY_REQUIRE="5.0.*"
       install:
+        - composer require symfony/cache:5.0.*
+        - composer require symfony/dependency-injection:5.0.*
+        - composer require symfony/framework-bundle:5.0.*
         - composer update
-        - composer show -i
 
     # Test dev versions
     - php: 7.3
