@@ -32,18 +32,21 @@ jobs:
       env: SYMFONY_REQUIRE="4.3.*"
       install:
         - composer update
+        - composer show -i
 
     # Test against latest Symfony 4.4 dev
     - php: 7.3
       env: SYMFONY_REQUIRE="4.4.*"
       install:
         - composer update
+        - composer show -i
 
     # Test against latest Symfony 5.0 dev
     - php: 7.3
       env: SYMFONY_REQUIRE="5.0.*"
       install:
         - composer update
+        - composer show -i
 
     # Test dev versions
     - php: 7.3
