@@ -25,7 +25,7 @@ Register the bundle, add the following line to `config/bundles.php`:
     Batenburg\CacheBundle\CacheBundle::class => ['all' => true],
 ```
 
-## usage
+## Usage
 
 After the installation is completed, the CacheRepositoryInterface can be resolved by dependency injection.
 Or through the container. It is highly recommended to use dependency injection.

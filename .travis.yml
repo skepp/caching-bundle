@@ -18,10 +18,9 @@ env:
 before_install:
   - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
   - composer self-update
-  - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
 
 install:
-  - travis_retry composer update -n --prefer-dist --prefer-stable
+  - composer update
 
 script:
   - ./vendor/bin/phpunit -v
@@ -32,32 +31,27 @@ jobs:
     - php: 7.3
       env: SYMFONY_REQUIRE="4.3.*"
       install:
-        - composer require --dev symfony/messenger --no-update
-        - travis_retry composer update -n --prefer-dist --prefer-stable
+        - composer update
 
     # Test against latest Symfony 4.4 dev
     - php: 7.3
       env: SYMFONY_REQUIRE="4.4.*"
       install:
-        - composer require --dev symfony/messenger --no-update
-        - travis_retry composer update -n --prefer-dist
+        - composer update
 
     # Test against latest Symfony 5.0 dev
     - php: 7.3
       env: SYMFONY_REQUIRE="5.0.*"
       install:
-        - composer require --dev symfony/messenger --no-update
-        - travis_retry composer update -n --prefer-dist
+        - composer update
 
     # Test dev versions
     - php: 7.3
       if: type = cron
-      env: DEV
       install:
-        - travis_retry composer update -n --prefer-dist
+        - composer update
 
     - stage: Code Quality
-      env: CODING_STANDARDS
       php: 7.3
       script:
         - ./vendor/bin/phpcs
@@ -65,8 +59,7 @@ jobs:
     - stage: Coverage
       php: 7.3
       install:
-        - composer require --dev "symfony/messenger" --no-update
-        - travis_retry composer update -n --prefer-dist
+        - composer update
       before_script:
         - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{.disabled,}
         - if [[ ! $(php -m | grep -si xdebug) ]]; then echo "xdebug required for coverage"; exit 1; fi
