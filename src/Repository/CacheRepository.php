@@ -70,8 +70,12 @@ class CacheRepository implements CacheRepositoryInterface
      * @return CacheItemInterface
      * @throws InvalidArgumentException
      */
-    public function rememberItem(string $key, callable $callback, ?int $expiresAfterInSeconds = null, ...$arguments): CacheItemInterface
-    {
+    public function rememberItem(
+        string $key,
+        callable $callback,
+        ?int $expiresAfterInSeconds = null,
+        ...$arguments
+    ): CacheItemInterface {
         $item = $this->cacheAdapter->getItem($key);
 
         if (!$item->isHit()) {

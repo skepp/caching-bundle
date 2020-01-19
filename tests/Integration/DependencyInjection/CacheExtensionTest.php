@@ -76,5 +76,3 @@ class CacheExtensionTest extends TestCase
         return $container;
     }
 }
-
-

@@ -409,8 +409,12 @@ class CacheRepositoryTest extends TestCase
      * @param string $expectedValue
      * @param int $expectedExpiresAfterInSeconds
      */
-    private function expectedItemSave(string $key, int $at, string $expectedValue, int $expectedExpiresAfterInSeconds): void
-    {
+    private function expectedItemSave(
+        string $key,
+        int $at,
+        string $expectedValue,
+        int $expectedExpiresAfterInSeconds
+    ): void {
         $this->cacheAdapter->expects($this->at($at))
             ->method('getItem')
             ->with($key)
