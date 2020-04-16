@@ -2,7 +2,7 @@
 
 Caching for the Symfony Framework.
 
-Build Status: [![Build Status](https://travis-ci.org/doctrine/DoctrineBundle.svg?branch=master)](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)
+Build Status: [![Build Status](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)
 
 ## What is Caching Bundle?
 
