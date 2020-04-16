@@ -1,5 +1,6 @@
 /var/
 /vendor/
+/build/
 composer.lock
 .phpunit.result.cache
 .phpcs-cache
