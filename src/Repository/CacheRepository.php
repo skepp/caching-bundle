@@ -66,6 +66,7 @@ class CacheRepository implements CacheRepositoryInterface
      * @param string $key
      * @param callable $callback
      * @param int|null $expiresAfterInSeconds
+     * @param bool $forceRefresh
      * @param array $arguments
      * @return CacheItemInterface
      * @throws InvalidArgumentException
@@ -74,11 +75,12 @@ class CacheRepository implements CacheRepositoryInterface
         string $key,
         callable $callback,
         ?int $expiresAfterInSeconds = null,
+        bool $forceRefresh = false,
         ...$arguments
     ): CacheItemInterface {
         $item = $this->cacheAdapter->getItem($key);
 
-        if (!$item->isHit()) {
+        if (!$item->isHit() || $forceRefresh) {
             $item = $this->saveItem($key, $callback(...$arguments), $expiresAfterInSeconds);
         }
 
