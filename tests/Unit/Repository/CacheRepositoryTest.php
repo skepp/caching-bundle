@@ -58,7 +58,8 @@ class CacheRepositoryTest extends TestCase
         bool $isCacheHit
     ): void {
         // Setup
-        $this->mockCacheItemIsHit($key, $isCacheHit);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit($isCacheHit);
         // Execute
         $result = $this->cacheRepository->hasItem($key);
         // Validate
@@ -79,7 +80,8 @@ class CacheRepositoryTest extends TestCase
         bool $isCacheHit
     ): void {
         // Setup
-        $this->mockCacheItemIsHit($key, $isCacheHit);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit($isCacheHit);
         // Execute
         $result = $this->cacheRepository->missingItem($key);
         // Validate
@@ -94,7 +96,8 @@ class CacheRepositoryTest extends TestCase
     {
         // Setup
         $key = 'test.key';
-        $this->mockCacheItemIsHit($key, true);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit(true);
         // Expectation
         $this->cachedItem->expects($this->never())
             ->method('set');
@@ -115,7 +118,8 @@ class CacheRepositoryTest extends TestCase
         // Setup
         $key         = 'test.key';
         $cachingText = 'test cache text';
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectation
         $this->cachedItem->expects($this->once())
             ->method('set')
@@ -137,7 +141,8 @@ class CacheRepositoryTest extends TestCase
     {
         // Setup
         $key = 'test.key';
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectation
         $this->cachedItem->expects($this->never())
             ->method('set');
@@ -160,7 +165,8 @@ class CacheRepositoryTest extends TestCase
         $closure = function () {
             return 'item';
         };
-        $this->mockCacheItemIsHit($key, true);
+        $this->mockGetItem(1, [$key]);
+        $this->mockCacheItemIsHit(true);
         // Expectations
         $this->cachedItem->expects($this->never())
             ->method('set');
@@ -184,9 +190,10 @@ class CacheRepositoryTest extends TestCase
         $closure  = function () use ($expected) {
             return $expected;
         };
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($key, 1, $expected, 3600);
+        $this->expectedItemSave($expected, 3600);
         // Execute
         $result = $this->cacheRepository->rememberItem($key, $closure);
         // Validate
@@ -203,11 +210,12 @@ class CacheRepositoryTest extends TestCase
         $id      = 999;
         $key     = 'test.key';
         $closure = [$this, 'fakeFindById'];
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($key, 1, $id, 3600);
+        $this->expectedItemSave($id, 3600);
         // Execute
-        $result = $this->cacheRepository->rememberItem($key, $closure, null, $id);
+        $result = $this->cacheRepository->rememberItem($key, $closure, null, false, $id);
         // Validate
         $this->assertInstanceOf(CacheItemInterface::class, $result);
     }
@@ -223,11 +231,19 @@ class CacheRepositoryTest extends TestCase
         $argument = 'text';
         $key      = 'test.key';
         $closure  = [$this, 'fakeFindByIdWithArgument'];
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($key, 1, $id . $argument, 3600);
+        $this->expectedItemSave($id . $argument, 3600);
         // Execute
-        $result = $this->cacheRepository->rememberItem($key, $closure, null, $id, $argument);
+        $result = $this->cacheRepository->rememberItem(
+            $key,
+            $closure,
+            null,
+            false,
+            $id,
+            $argument
+        );
         // Validate
         $this->assertInstanceOf(CacheItemInterface::class, $result);
     }
@@ -245,9 +261,10 @@ class CacheRepositoryTest extends TestCase
             return $expected;
         };
         $expiresAfterInSeconds = 600;
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($key, 1, $expected, $expiresAfterInSeconds);
+        $this->expectedItemSave($expected, $expiresAfterInSeconds);
         // Execute
         $result = $this->cacheRepository->rememberItem($key, $closure, $expiresAfterInSeconds);
         // Validate
@@ -263,11 +280,31 @@ class CacheRepositoryTest extends TestCase
         // Setup
         $key      = 'test.key';
         $callable = [$this, 'fakeCallback'];
-        $this->mockCacheItemIsHit($key, false);
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($key, 1, 'fake result', 3600);
+        $this->expectedItemSave('fake result', 3600);
         // Execute
         $result = $this->cacheRepository->rememberItem($key, $callable);
+        // Validate
+        $this->assertInstanceOf(CacheItemInterface::class, $result);
+    }
+
+    /**
+     * @covers \Batenburg\CacheBundle\Repository\CacheRepository::rememberItem
+     * @throws InvalidArgumentException
+     */
+    public function testARememberItemCanForcedToBeRefreshed(): void
+    {
+        // Setup
+        $key      = 'test.key';
+        $callable = [$this, 'fakeCallback'];
+        $this->mockGetItem(2, [$key], [$key]);
+        $this->mockCacheItemIsHit(true);
+        // Expectations
+        $this->expectedItemSave('fake result', 3600);
+        // Execute
+        $result = $this->cacheRepository->rememberItem($key, $callable, 3600, true);
         // Validate
         $this->assertInstanceOf(CacheItemInterface::class, $result);
     }
@@ -283,7 +320,8 @@ class CacheRepositoryTest extends TestCase
         $key   = 'test.key';
         $value = 'the value to cache';
         // Expectations
-        $this->expectedItemSave($key, 0, $value, 3600);
+        $this->mockGetItem(1, [$key]);
+        $this->expectedItemSave($value, 3600);
         // Execute
         $this->cacheRepository->saveItem($key, $value);
     }
@@ -299,7 +337,8 @@ class CacheRepositoryTest extends TestCase
         $value                 = 'the value to cache';
         $expiresAfterInSeconds = 600;
         // Expectations
-        $this->expectedItemSave($key, 0, $value, $expiresAfterInSeconds);
+        $this->mockGetItem(1, [$key]);
+        $this->expectedItemSave($value, $expiresAfterInSeconds);
         // Execute
         $this->cacheRepository->saveItem($key, $value, $expiresAfterInSeconds);
     }
@@ -388,37 +427,32 @@ class CacheRepositoryTest extends TestCase
         return $id . $argument;
     }
 
+    private function mockGetItem(int $count, ...$keys): void
+    {
+        $this->cacheAdapter->expects($this->exactly($count))
+            ->method('getItem')
+            ->withConsecutive(...$keys)
+            ->willReturn($this->cachedItem);
+    }
+
     /**
-     * @param string $key
      * @param bool $isCacheHit
      */
-    private function mockCacheItemIsHit(string $key, bool $isCacheHit): void
+    private function mockCacheItemIsHit(bool $isCacheHit): void
     {
-        $this->cacheAdapter->expects($this->at(0))
-            ->method('getItem')
-            ->with($key)
-            ->willReturn($this->cachedItem);
         $this->cachedItem->expects($this->once())
             ->method('isHit')
             ->willReturn($isCacheHit);
     }
 
     /**
-     * @param string $key
-     * @param int $at
      * @param string $expectedValue
      * @param int $expectedExpiresAfterInSeconds
      */
     private function expectedItemSave(
-        string $key,
-        int $at,
         string $expectedValue,
         int $expectedExpiresAfterInSeconds
     ): void {
-        $this->cacheAdapter->expects($this->at($at))
-            ->method('getItem')
-            ->with($key)
-            ->willReturn($this->cachedItem);
         $this->cachedItem->expects($this->once())
             ->method('set')
             ->with($expectedValue)
