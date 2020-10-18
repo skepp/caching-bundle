@@ -204,54 +204,6 @@ class CacheRepositoryTest extends TestCase
      * @covers \Batenburg\CacheBundle\Repository\CacheRepository::rememberItem
      * @throws InvalidArgumentException
      */
-    public function testAnItemIsRememberedWithArguments(): void
-    {
-        // Setup
-        $id      = 999;
-        $key     = 'test.key';
-        $closure = [$this, 'fakeFindById'];
-        $this->mockGetItem(2, [$key], [$key]);
-        $this->mockCacheItemIsHit(false);
-        // Expectations
-        $this->expectedItemSave($id, 3600);
-        // Execute
-        $result = $this->cacheRepository->rememberItem($key, $closure, null, false, $id);
-        // Validate
-        $this->assertInstanceOf(CacheItemInterface::class, $result);
-    }
-
-    /**
-     * @covers \Batenburg\CacheBundle\Repository\CacheRepository::rememberItem
-     * @throws InvalidArgumentException
-     */
-    public function testAnItemIsRememberedWithMultipleArguments(): void
-    {
-        // Setup
-        $id       = 999;
-        $argument = 'text';
-        $key      = 'test.key';
-        $closure  = [$this, 'fakeFindByIdWithArgument'];
-        $this->mockGetItem(2, [$key], [$key]);
-        $this->mockCacheItemIsHit(false);
-        // Expectations
-        $this->expectedItemSave($id . $argument, 3600);
-        // Execute
-        $result = $this->cacheRepository->rememberItem(
-            $key,
-            $closure,
-            null,
-            false,
-            $id,
-            $argument
-        );
-        // Validate
-        $this->assertInstanceOf(CacheItemInterface::class, $result);
-    }
-
-    /**
-     * @covers \Batenburg\CacheBundle\Repository\CacheRepository::rememberItem
-     * @throws InvalidArgumentException
-     */
     public function testARememberItemCanBeStoredWithACustomExpiresAfter(): void
     {
         // Setup
@@ -286,25 +238,6 @@ class CacheRepositoryTest extends TestCase
         $this->expectedItemSave('fake result', 3600);
         // Execute
         $result = $this->cacheRepository->rememberItem($key, $callable);
-        // Validate
-        $this->assertInstanceOf(CacheItemInterface::class, $result);
-    }
-
-    /**
-     * @covers \Batenburg\CacheBundle\Repository\CacheRepository::rememberItem
-     * @throws InvalidArgumentException
-     */
-    public function testARememberItemCanForcedToBeRefreshed(): void
-    {
-        // Setup
-        $key      = 'test.key';
-        $callable = [$this, 'fakeCallback'];
-        $this->mockGetItem(2, [$key], [$key]);
-        $this->mockCacheItemIsHit(true);
-        // Expectations
-        $this->expectedItemSave('fake result', 3600);
-        // Execute
-        $result = $this->cacheRepository->rememberItem($key, $callable, 3600, true);
         // Validate
         $this->assertInstanceOf(CacheItemInterface::class, $result);
     }
