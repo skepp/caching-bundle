@@ -2,7 +2,7 @@
 
 Caching for the Symfony Framework.
 
-Build Status: [![Build Status](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)
+Build Status: [![Build Status](https://travis-ci.com/batenburg/caching-bundle.svg?branch=master)](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)
 
 Code coverage: [![Coverage Status](https://coveralls.io/repos/github/batenburg/caching-bundle/badge.svg?branch=master)](https://coveralls.io/github/batenburg/caching-bundle?branch=master)
 
