@@ -50,7 +50,7 @@ jobs:
     # Test against latest Symfony 5.1 stable
     - php: 7.4
       install:
-        - composer require symfony/cache:5.2.* symfony/dependency-injection:5.1.* symfony/framework-bundle:5.2.*
+        - composer require symfony/cache:5.2.* symfony/dependency-injection:5.2.* symfony/framework-bundle:5.2.*
 
     # Test dev versions
     - php: 7.4
