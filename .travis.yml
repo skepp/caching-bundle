@@ -10,6 +10,7 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - 8.0
 
 env:
   global:
@@ -62,6 +63,7 @@ jobs:
       php: 7.4
       script:
         - ./vendor/bin/phpcs
+        - ./vendor/bin/psalm
 
     - stage: Coverage
       php: 7.4
@@ -73,4 +75,4 @@ jobs:
       script:
         - ./vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
       after_script:
-        - php ./vendor/bin/php-coveralls -v
+        -  php coverage-checker.php clover.xml 100
