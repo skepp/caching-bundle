@@ -162,7 +162,7 @@ class CacheRepositoryTest extends TestCase
     {
         // Setup
         $key     = 'test.key';
-        $closure = function () {
+        $closure = function (): string {
             return 'item';
         };
         $this->mockGetItem(1, [$key]);
@@ -187,7 +187,7 @@ class CacheRepositoryTest extends TestCase
         // Setup
         $key      = 'test.key';
         $expected = 'expected result';
-        $closure  = function () use ($expected) {
+        $closure  = function () use ($expected): string {
             return $expected;
         };
         $this->mockGetItem(2, [$key], [$key]);
@@ -209,7 +209,7 @@ class CacheRepositoryTest extends TestCase
         // Setup
         $key      = 'test.key';
         $expected = 'expected result';
-        $closure  = function () use ($expected) {
+        $closure  = function () use ($expected): string {
             return $expected;
         };
         $expiresAfterInSeconds = 600;
@@ -360,6 +360,10 @@ class CacheRepositoryTest extends TestCase
         return $id . $argument;
     }
 
+    /**
+     * @param int $count
+     * @param mixed ...$keys
+     */
     private function mockGetItem(int $count, ...$keys): void
     {
         $this->cacheAdapter->expects($this->exactly($count))
