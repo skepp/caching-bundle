@@ -213,7 +213,7 @@ class CacheRepositoryTest extends TestCase
         $this->mockGetItem(2, [$key], [$key]);
         $this->mockCacheItemIsHit(false);
         // Expectations
-        $this->expectedItemSave($id, 3600);
+        $this->expectedItemSave((string)$id, 3600);
         // Execute
         $result = $this->cacheRepository->rememberItem($key, $closure, null, false, $id);
         // Validate
