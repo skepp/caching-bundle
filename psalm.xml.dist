@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="3"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="src" />
+        <directory name="tests" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <PropertyNotSetInConstructor>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </PropertyNotSetInConstructor>
+
+        <PossiblyUndefinedMethod>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </PossiblyUndefinedMethod>
+
+        <PossiblyInvalidArgument>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </PossiblyInvalidArgument>
+
+        <MismatchingDocblockPropertyType>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </MismatchingDocblockPropertyType>
+
+        <MixedMethodCall>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </MixedMethodCall>
+
+        <InvalidThrow>
+            <errorLevel type="suppress">
+                <file name="src/Repository/CacheRepository.php"/>
+                <file name="tests/Unit/Repository/CacheRepositoryTest.php"/>
+            </errorLevel>
+        </InvalidThrow>
+    </issueHandlers>
+</psalm>
