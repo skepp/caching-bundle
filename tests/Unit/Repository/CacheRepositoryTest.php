@@ -7,8 +7,8 @@ use Batenburg\CacheBundle\Repository\Contract\CacheRepositoryInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 /**
  * @covers \Batenburg\CacheBundle\Repository\CacheRepository
@@ -17,7 +17,7 @@ class CacheRepositoryTest extends TestCase
 {
 
     /**
-     * @var MockObject|AdapterInterface
+     * @var MockObject|CacheItemPoolInterface
      */
     private $cacheAdapter;
 
@@ -34,7 +34,7 @@ class CacheRepositoryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->cacheAdapter    = $this->createMock(AdapterInterface::class);
+        $this->cacheAdapter    = $this->createMock(CacheItemPoolInterface::class);
         $this->cachedItem      = $this->createMock(CacheItemInterface::class);
         $this->cacheRepository = new CacheRepository($this->cacheAdapter);
     }

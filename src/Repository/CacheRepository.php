@@ -5,22 +5,22 @@ namespace Batenburg\CacheBundle\Repository;
 use Closure;
 use Batenburg\CacheBundle\Repository\Contract\CacheRepositoryInterface;
 use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class CacheRepository implements CacheRepositoryInterface
 {
     const DEFAULT_EXPIRES_AFTER_IN_SECONDS = 3600;
 
     /**
-     * @var AdapterInterface
+     * @var CacheItemPoolInterface
      */
     private $cacheAdapter;
 
     /**
-     * @param AdapterInterface $cacheAdapter
+     * @param CacheItemPoolInterface $cacheAdapter
      */
-    public function __construct(AdapterInterface $cacheAdapter)
+    public function __construct(CacheItemPoolInterface $cacheAdapter)
     {
         $this->cacheAdapter = $cacheAdapter;
     }

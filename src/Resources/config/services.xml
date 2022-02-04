@@ -9,7 +9,7 @@
                 id="batenburg.cache_bundle.repository.cache_repository"
                 class="Batenburg\CacheBundle\Repository\CacheRepository"
                 public="false" >
-            <argument type="service" key="$cacheAdapter" id="Symfony\Component\Cache\Adapter\AdapterInterface" />
+            <argument type="service" key="$cacheAdapter" id="Psr\Cache\CacheItemPoolInterface" />
         </service>
         <service
                 id="Batenburg\CacheBundle\Repository\Contract\CacheRepositoryInterface"
