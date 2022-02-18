@@ -30,6 +30,7 @@ interface CacheRepositoryInterface
      * @param string $key
      * @param callable $callback
      * @param int|null $expiresAfterInSeconds
+     * @param bool $forceRefresh
      * @param array $arguments
      * @return CacheItemInterface
      */
@@ -37,6 +38,7 @@ interface CacheRepositoryInterface
         string $key,
         callable $callback,
         ?int $expiresAfterInSeconds = null,
+        bool $forceRefresh = false,
         ...$arguments
     ): CacheItemInterface;
 

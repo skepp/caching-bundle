@@ -2,8 +2,6 @@
 
 Caching for the Symfony Framework.
 
-Build Status: [![Build Status](https://travis-ci.com/batenburg/caching-bundle.svg?branch=master)](https://travis-ci.org/batenburg/caching-bundle.svg?branch=master)
-
 ## What is Caching Bundle?
 
 The caching bundle is an repository around the Symfony Cache. Its purpose is to simplify usage of Symfony Cache.

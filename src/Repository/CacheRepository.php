@@ -5,22 +5,22 @@ namespace Batenburg\CacheBundle\Repository;
 use Closure;
 use Batenburg\CacheBundle\Repository\Contract\CacheRepositoryInterface;
 use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class CacheRepository implements CacheRepositoryInterface
 {
     const DEFAULT_EXPIRES_AFTER_IN_SECONDS = 3600;
 
     /**
-     * @var AdapterInterface
+     * @var CacheItemPoolInterface
      */
     private $cacheAdapter;
 
     /**
-     * @param AdapterInterface $cacheAdapter
+     * @param CacheItemPoolInterface $cacheAdapter
      */
-    public function __construct(AdapterInterface $cacheAdapter)
+    public function __construct(CacheItemPoolInterface $cacheAdapter)
     {
         $this->cacheAdapter = $cacheAdapter;
     }
@@ -66,6 +66,7 @@ class CacheRepository implements CacheRepositoryInterface
      * @param string $key
      * @param callable $callback
      * @param int|null $expiresAfterInSeconds
+     * @param bool $forceRefresh
      * @param array $arguments
      * @return CacheItemInterface
      * @throws InvalidArgumentException
@@ -74,11 +75,12 @@ class CacheRepository implements CacheRepositoryInterface
         string $key,
         callable $callback,
         ?int $expiresAfterInSeconds = null,
+        bool $forceRefresh = false,
         ...$arguments
     ): CacheItemInterface {
         $item = $this->cacheAdapter->getItem($key);
 
-        if (!$item->isHit()) {
+        if (!$item->isHit() || $forceRefresh) {
             $item = $this->saveItem($key, $callback(...$arguments), $expiresAfterInSeconds);
         }
 
