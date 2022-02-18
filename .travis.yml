@@ -48,10 +48,20 @@ jobs:
       install:
         - composer require symfony/cache:5.1.* symfony/dependency-injection:5.1.* symfony/framework-bundle:5.1.*
 
-    # Test against latest Symfony 5.1 stable
+    # Test against latest Symfony 5.2 stable
     - php: 7.4
       install:
         - composer require symfony/cache:5.2.* symfony/dependency-injection:5.2.* symfony/framework-bundle:5.2.*
+
+    # Test against latest Symfony 5.3 stable
+    - php: 7.4
+      install:
+        - composer require symfony/cache:5.3.* symfony/dependency-injection:5.3.* symfony/framework-bundle:5.3.*
+
+    # Test against latest Symfony 5.4 stable
+    - php: 7.4
+      install:
+        - composer require symfony/cache:5.4.* symfony/dependency-injection:5.4.* symfony/framework-bundle:5.4.*
 
     # Test dev versions
     - php: 7.4
